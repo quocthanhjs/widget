@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    android:padding="10dp" android:background="@drawable/widget_glass_bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1.02" android:orientation="vertical"
+            android:gravity="center_vertical" android:paddingEnd="7dp">
+            <TextClock android:id="@+id/digital_clock" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:format24Hour="HH:mm"
+                android:format12Hour="hh:mm" android:textColor="#FFFFFFFF"
+                android:textSize="48sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/solar_date" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Thứ Tư, 18 tháng 11, 2026"
+                android:textColor="#FFFFFFFF" android:textSize="13sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/lunar_date" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="5dp"
+                android:padding="6dp" android:gravity="center"
+                android:text="Ngày âm lịch Việt Nam" android:textColor="#FFFFEA57"
+                android:textSize="13sp" android:textStyle="bold"
+                android:background="@drawable/widget_panel_bg"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginTop="7dp">
+                <TextView android:id="@+id/weather_icon" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="☀️" android:textSize="27sp"/>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:layout_marginStart="6dp">
+                    <TextView android:id="@+id/temp" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="--°C"
+                        android:textColor="#FFFFFFFF" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/weather_desc" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="Chạm để mở thời tiết"
+                        android:textColor="#FFFFFFFF" android:textSize="10sp"/>
+                    <TextView android:id="@+id/location" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="⌖ Vị trí"
+                        android:textColor="#FFFFFFFF" android:textSize="11sp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="0.98" android:orientation="vertical"
+            android:paddingStart="7dp">
+            <TextView android:id="@+id/month_title" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center"
+                android:text="Tháng 11, 2026" android:textColor="#FFFFFFFF"
+                android:textSize="16sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/month_grid" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center"
+                android:text="T2 T3 T4 T5 T6 T7 CN"
+                android:textColor="#FFFFFFFF" android:textSize="11sp"
+                android:lineSpacingExtra="3dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:id="@+id/forecast" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:padding="8dp"
+        android:background="@drawable/widget_panel_bg" android:gravity="center"
+        android:text="DỰ BÁO 7 NGÀY • Cần cấu hình nguồn thời tiết"
+        android:textColor="#FFFFFFFF" android:textSize="10sp"/>
+</LinearLayout>

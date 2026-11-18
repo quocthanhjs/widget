@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    android:padding="12dp" android:background="#FF050B14">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1.12" android:orientation="vertical"
+            android:gravity="center_vertical" android:paddingEnd="8dp">
+            <TextView android:id="@+id/min_location" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="⌖ Đang lấy vị trí"
+                android:textColor="#FFD8E5F2" android:textSize="11sp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <TextView android:id="@+id/min_temp" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="26°"
+                    android:textColor="#FFFFFFFF" android:textSize="48sp" android:textStyle="normal"/>
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:layout_marginStart="8dp">
+                    <TextView android:id="@+id/min_icon" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="🌤️" android:textSize="27sp"/>
+                    <TextView android:id="@+id/min_desc" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="Thời tiết hiện tại"
+                        android:textColor="#FFD8E5F2" android:textSize="10sp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <TextView android:id="@+id/min_forecast" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="7dp"
+                android:text="T2  ☁   T3  🌦   T4  ☁"
+                android:textColor="#FFE8EAF0" android:textSize="10sp"/>
+            <TextView android:id="@+id/min_month_title" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="10dp"
+                android:text="THÁNG 11" android:textColor="#FFFFE08A" android:textSize="11sp"/>
+            <TextView android:id="@+id/min_big_day" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="18"
+                android:textColor="#FFFFFFFF" android:textSize="68sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/min_lunar" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:padding="5dp"
+                android:background="@drawable/widget_panel_bg" android:text="10/10 • Âm lịch"
+                android:textColor="#FFFFFFFF" android:textSize="11sp"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="0.88" android:orientation="vertical" android:paddingStart="5dp">
+            <TextView android:id="@+id/min_calendar_title" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center"
+                android:text="LỊCH THÁNG" android:textColor="#FFFFE08A" android:textSize="11sp"/>
+            <TextView android:id="@+id/min_calendar" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center"
+                android:text="T2 T3 T4 T5 T6 T7 CN"
+                android:textColor="#FFFFFFFF" android:textSize="10sp"
+                android:lineSpacingExtra="3dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:id="@+id/min_phrase" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center"
+        android:paddingTop="8dp" android:text="Cứ bước tiếp, những điều đẹp đẽ sẽ đến."
+        android:textColor="#FFFFFFFF" android:textSize="15sp" android:textStyle="italic"/>
+    <TextView android:id="@+id/min_quote_author" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="end"
+        android:text="— Lời hay ý đẹp —" android:textColor="#FFB6C6D8" android:textSize="9sp"/>
+</LinearLayout>
