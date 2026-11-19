@@ -16,7 +16,7 @@
         </LinearLayout>
         <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="0.98" ns0:orientation="vertical" ns0:paddingStart="7dp">
             <TextView ns0:id="@+id/month_title" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Tháng 11, 2026" ns0:textColor="#FFFFFFFF" ns0:textSize="16sp" ns0:textStyle="bold" />
-            <TextView ns0:id="@+id/month_grid" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:gravity="center" ns0:text="T2 T3 T4 T5 T6 T7 CN" ns0:textColor="#FFFFFFFF" ns0:textSize="11sp" ns0:lineSpacingExtra="3dp" />
+            <TextView ns0:id="@+id/month_grid" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:gravity="center" ns0:text="T2 T3 T4 T5 T6 T7 CN" ns0:textColor="#FFFFFFFF" ns0:textSize="8sp" ns0:fontFamily="monospace" ns0:lineSpacingExtra="1dp" />
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>

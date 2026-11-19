@@ -17,8 +17,8 @@ object WidgetUpdater {
         val prefs=context.getSharedPreferences("dqt_settings",Context.MODE_PRIVATE)
         val design=prefs.getInt("design",0)
         val layout=when(design) {
-            1 -> R.layout.widget_analog
-            2 -> R.layout.widget_minimal
+            1 -> R.layout.widget_minimal
+            2 -> R.layout.widget_analog
             else -> R.layout.widget_digital
         }
         update(context,DigitalWidgetProvider::class.java,layout,design)
@@ -46,23 +46,18 @@ object WidgetUpdater {
         val desc=prefs.getString("weather_desc","Nhấn cập nhật vị trí điện thoại").orEmpty()
         val monthTitle=SimpleDateFormat("'Tháng' M, yyyy",locale).apply{timeZone=tz}.format(now)
 
-        if(design==1){
+        if(design==2){
             v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt())))
             v.setTextViewText(R.id.phrase,phrase)
             v.setTextViewText(R.id.month_solar,"${cal.get(Calendar.MONTH)+1} / ${cal.get(Calendar.YEAR)} (Dương lịch)")
             v.setTextViewText(R.id.month_lunar,"Tháng ${lunar.second} năm ${lunar.third} (Âm lịch)")
             v.setTextViewText(R.id.analog_weather,"${prefs.getString("weather_icon","🌤️")}  $temp  •  $desc")
             v.setTextViewText(R.id.analog_location,"⌖ $location")
-        } else if(design==2) {
+        } else if(design==1) {
+            v.setTextViewText(R.id.min_solar_date,solar.replaceFirstChar{it.uppercase(locale)})
+            v.setTextViewText(R.id.min_lunar,lunarText)
+            v.setTextViewText(R.id.min_weather,"${prefs.getString("weather_icon","🌤️")}  $temp  ·  $desc")
             v.setTextViewText(R.id.min_location,"⌖ $location")
-            v.setTextViewText(R.id.min_temp,temp.replace("°C","°"))
-            v.setTextViewText(R.id.min_icon,prefs.getString("weather_icon","🌤️"))
-            v.setTextViewText(R.id.min_desc,desc)
-            v.setTextViewText(R.id.min_month_title,"THÁNG ${cal.get(Calendar.MONTH)+1}")
-            v.setTextViewText(R.id.min_big_day,String.format(locale,"%02d",cal.get(Calendar.DAY_OF_MONTH)))
-            v.setTextViewText(R.id.min_lunar,"${lunar.first}/${lunar.second} • Âm lịch")
-            v.setTextViewText(R.id.min_calendar_title,monthTitle.uppercase(locale))
-            v.setTextViewText(R.id.min_calendar,monthGrid(cal,locale))
             v.setTextViewText(R.id.min_phrase,phrase)
         } else {
             v.setTextViewText(R.id.solar_date,solar.replaceFirstChar{it.uppercase(locale)})
@@ -81,8 +76,8 @@ object WidgetUpdater {
         val click=Intent(context,SettingsActivity::class.java).putExtra("open_weather",true)
         val pi=PendingIntent.getActivity(context,design+1,click,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val clickIds=when(design) {
-            1 -> listOf(R.id.analog_weather,R.id.analog_location)
-            2 -> listOf(R.id.min_icon,R.id.min_temp,R.id.min_desc,R.id.min_location)
+            2 -> listOf(R.id.analog_weather,R.id.analog_location)
+            1 -> listOf(R.id.min_weather,R.id.min_location)
             else -> listOf(R.id.weather_icon,R.id.temp,R.id.weather_desc,R.id.location)
         }
         clickIds.forEach{runCatching{v.setOnClickPendingIntent(it,pi)}}
@@ -93,17 +88,21 @@ object WidgetUpdater {
         c.set(Calendar.DAY_OF_MONTH,1)
         val first=(c.get(Calendar.DAY_OF_WEEK)+5)%7
         val max=c.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val cells=MutableList(42){"  ·  "}
+        val solar=MutableList(42){"  "}
+        val lunar=MutableList(42){"  "}
         for(day in 1..max){
-            val lunar=LunarCalendar.fromSolar(day,c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR))
-            cells[first+day-1]=String.format(locale,"%2d/%02d",day,lunar.first)
+            val index=first+day-1
+            val lunarDate=LunarCalendar.fromSolar(day,c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR))
+            solar[index]=String.format(locale,"%2d",day)
+            lunar[index]=String.format(locale,"%2d",lunarDate.first)
         }
-        val out=StringBuilder("T2   T3   T4   T5   T6   T7   CN\n")
+        val out=StringBuilder("T2 T3 T4 T5 T6 T7 CN\n")
         for(row in 0 until 6){
-            for(col in 0 until 7) out.append(cells[row*7+col]).append(" ")
+            for(col in 0 until 7) out.append(solar[row*7+col]).append(" ")
+            out.append("\n")
+            for(col in 0 until 7) out.append(lunar[row*7+col]).append(" ")
             if(row<5) out.append("\n")
         }
         return out.toString()
     }
-
 }
