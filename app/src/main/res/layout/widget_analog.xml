@@ -1,41 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_root" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical"
-    android:padding="10dp" android:background="@drawable/widget_glass_bg">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
-        android:layout_weight="1" android:orientation="horizontal">
-        <ImageView android:id="@+id/analog_face" android:layout_width="0dp"
-            android:layout_height="match_parent" android:layout_weight="0.92"
-            android:scaleType="fitCenter" android:contentDescription="Đồng hồ kim truyền thống"/>
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1.08" android:orientation="vertical"
-            android:gravity="center_vertical" android:paddingStart="9dp">
-            <TextView android:id="@+id/phrase" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:text="Vạn Sự Bình An" android:textColor="#FFFFD66B"
-                android:textSize="25sp" android:textStyle="italic"/>
-            <TextView android:id="@+id/month_solar" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:layout_marginTop="7dp" android:padding="7dp"
-                android:background="@drawable/widget_panel_bg"
-                android:text="Tháng 11 năm 2026 (Dương lịch)"
-                android:textColor="#FFFFFFFF" android:textSize="12sp"/>
-            <TextView android:id="@+id/month_lunar" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:text="Tháng âm lịch Việt Nam"
-                android:textColor="#FFFFE66C" android:textSize="12sp"/>
-            <TextView android:id="@+id/analog_weather" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:layout_marginTop="8dp" android:text="☀️  --°C  •  Chạm để mở thời tiết"
-                android:textColor="#FFFFFFFF" android:textSize="15sp"/>
-            <TextView android:id="@+id/analog_location" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:text="⌖ Vị trí" android:textColor="#FFFFFFFF" android:textSize="12sp"/>
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:ns0="http://schemas.android.com/apk/res/android" ns0:id="@+id/widget_root" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:orientation="vertical" ns0:padding="10dp" ns0:background="@drawable/widget_glass_bg">
+    <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="0dp" ns0:layout_weight="1" ns0:orientation="horizontal">
+        <ImageView ns0:id="@+id/analog_face" ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="0.92" ns0:scaleType="fitCenter" ns0:contentDescription="Đồng hồ kim truyền thống" />
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="1.08" ns0:orientation="vertical" ns0:gravity="center_vertical" ns0:paddingStart="9dp">
+            <TextView ns0:id="@+id/phrase" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Vạn Sự Bình An" ns0:textColor="#FFFFD66B" ns0:textSize="25sp" ns0:textStyle="italic" />
+            <TextView ns0:id="@+id/month_solar" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:layout_marginTop="7dp" ns0:padding="7dp" ns0:background="@drawable/widget_panel_bg" ns0:text="Tháng 11 năm 2026 (Dương lịch)" ns0:textColor="#FFFFFFFF" ns0:textSize="12sp" />
+            <TextView ns0:id="@+id/month_lunar" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Tháng âm lịch Việt Nam" ns0:textColor="#FFFFE66C" ns0:textSize="12sp" />
+            <TextView ns0:id="@+id/analog_weather" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:layout_marginTop="8dp" ns0:text="☀️  --°C  •  Chạm để mở thời tiết" ns0:textColor="#FFFFFFFF" ns0:textSize="15sp" />
+            <TextView ns0:id="@+id/analog_location" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="⌖ Vị trí" ns0:textColor="#FFFFFFFF" ns0:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
-    <TextView android:id="@+id/analog_forecast" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:padding="8dp"
-        android:background="@drawable/widget_panel_bg" android:gravity="center"
-        android:text="T2     T3     T4     T5     T6     T7     CN"
-        android:textColor="#FFFFFFFF" android:textSize="10sp"/>
-</LinearLayout>
+    </LinearLayout>

@@ -21,7 +21,6 @@ object WeatherClient {
             prefs.edit()
                 .putString("weather_temp", "--°C")
                 .putString("weather_desc", "Nhấn cập nhật vị trí điện thoại")
-                .putString("weather_forecast", "Chưa có vị trí thiết bị")
                 .apply()
             WidgetUpdater.refreshAll(context)
             return
@@ -33,29 +32,17 @@ object WeatherClient {
                     "?latitude=${String.format(Locale.US, "%.5f", lat)}" +
                     "&longitude=${String.format(Locale.US, "%.5f", lon)}" +
                     "&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m" +
-                    "&daily=weather_code,temperature_2m_max,temperature_2m_min" +
-                    "&timezone=Asia%2FHo_Chi_Minh&forecast_days=7"
+                    "&timezone=Asia%2FHo_Chi_Minh"
                 val data = JSONObject(get(url))
                 val current = data.getJSONObject("current")
                 val temp = current.getDouble("temperature_2m").toInt()
                 val code = current.getInt("weather_code")
                 val desc = description(code)
                 val icon = icon(code, current.optInt("is_day", 1) == 1)
-                val daily = data.getJSONObject("daily")
-                val dates = daily.getJSONArray("time")
-                val mins = daily.getJSONArray("temperature_2m_min")
-                val maxs = daily.getJSONArray("temperature_2m_max")
-                val codes = daily.getJSONArray("weather_code")
-                val rows = mutableListOf<String>()
-                for (i in 0 until minOf(dates.length(), 7)) {
-                    val date = dates.getString(i).takeLast(5)
-                    rows.add("$date ${mins.getDouble(i).toInt()}°/${maxs.getDouble(i).toInt()}° ${icon(codes.getInt(i), true)}")
-                }
                 prefs.edit()
                     .putString("weather_temp", "$temp°C")
                     .putString("weather_desc", desc)
                     .putString("weather_icon", icon)
-                    .putString("weather_forecast", rows.joinToString("   •   "))
                     .putLong("weather_updated", System.currentTimeMillis())
                     .apply()
                 WidgetUpdater.refreshAll(context)

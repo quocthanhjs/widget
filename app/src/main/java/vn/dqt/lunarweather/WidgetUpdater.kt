@@ -44,7 +44,6 @@ object WidgetUpdater {
         val location=prefs.getString("location_label","Đang lấy vị trí điện thoại…").orEmpty()
         val temp=prefs.getString("weather_temp","--°C").orEmpty()
         val desc=prefs.getString("weather_desc","Nhấn cập nhật vị trí điện thoại").orEmpty()
-        val forecast=prefs.getString("weather_forecast","Chưa có dữ liệu dự báo").orEmpty()
         val monthTitle=SimpleDateFormat("'Tháng' M, yyyy",locale).apply{timeZone=tz}.format(now)
 
         if(design==1){
@@ -54,13 +53,11 @@ object WidgetUpdater {
             v.setTextViewText(R.id.month_lunar,"Tháng ${lunar.second} năm ${lunar.third} (Âm lịch)")
             v.setTextViewText(R.id.analog_weather,"${prefs.getString("weather_icon","🌤️")}  $temp  •  $desc")
             v.setTextViewText(R.id.analog_location,"⌖ $location")
-            v.setTextViewText(R.id.analog_forecast,forecast)
         } else if(design==2) {
             v.setTextViewText(R.id.min_location,"⌖ $location")
             v.setTextViewText(R.id.min_temp,temp.replace("°C","°"))
             v.setTextViewText(R.id.min_icon,prefs.getString("weather_icon","🌤️"))
             v.setTextViewText(R.id.min_desc,desc)
-            v.setTextViewText(R.id.min_forecast,forecast)
             v.setTextViewText(R.id.min_month_title,"THÁNG ${cal.get(Calendar.MONTH)+1}")
             v.setTextViewText(R.id.min_big_day,String.format(locale,"%02d",cal.get(Calendar.DAY_OF_MONTH)))
             v.setTextViewText(R.id.min_lunar,"${lunar.first}/${lunar.second} • Âm lịch")
@@ -76,7 +73,6 @@ object WidgetUpdater {
             v.setTextViewText(R.id.weather_icon,prefs.getString("weather_icon","🌤️"))
             v.setTextViewText(R.id.weather_desc,desc)
             v.setTextViewText(R.id.location,"⌖ $location")
-            v.setTextViewText(R.id.forecast,forecast)
         }
         val alpha=prefs.getInt("background_alpha",88).coerceIn(0,100)
         val color=prefs.getInt("background_color",0xFF142D67.toInt())
@@ -93,16 +89,21 @@ object WidgetUpdater {
         return v
     }
     private fun monthGrid(cal:Calendar,locale:Locale):String {
-        val c=cal.clone() as Calendar;c.set(Calendar.DAY_OF_MONTH,1)
-        val first=(c.get(Calendar.DAY_OF_WEEK)+5)%7;val max=c.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val out=StringBuilder("T2   T3   T4   T5   T6   T7   CN\n")
-        for(i in 0 until first) out.append("     ")
+        val c=cal.clone() as Calendar
+        c.set(Calendar.DAY_OF_MONTH,1)
+        val first=(c.get(Calendar.DAY_OF_WEEK)+5)%7
+        val max=c.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val cells=MutableList(42){"  ·  "}
         for(day in 1..max){
             val lunar=LunarCalendar.fromSolar(day,c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR))
-            out.append(String.format(locale,"%2d",day)).append("\n")
-            out.append(String.format(locale,"%2d/%02d",lunar.first,lunar.second)).append(" ")
-            if((first+day)%7==0) out.append("\n")
+            cells[first+day-1]=String.format(locale,"%2d/%02d",day,lunar.first)
+        }
+        val out=StringBuilder("T2   T3   T4   T5   T6   T7   CN\n")
+        for(row in 0 until 6){
+            for(col in 0 until 7) out.append(cells[row*7+col]).append(" ")
+            if(row<5) out.append("\n")
         }
         return out.toString()
     }
+
 }

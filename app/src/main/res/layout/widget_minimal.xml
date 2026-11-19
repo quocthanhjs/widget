@@ -1,61 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_root" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical"
-    android:padding="12dp" android:background="#FF050B14">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
-        android:layout_weight="1" android:orientation="horizontal">
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1.12" android:orientation="vertical"
-            android:gravity="center_vertical" android:paddingEnd="8dp">
-            <TextView android:id="@+id/min_location" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="⌖ Đang lấy vị trí"
-                android:textColor="#FFD8E5F2" android:textSize="11sp"/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical">
-                <TextView android:id="@+id/min_temp" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="26°"
-                    android:textColor="#FFFFFFFF" android:textSize="48sp" android:textStyle="normal"/>
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:orientation="vertical" android:layout_marginStart="8dp">
-                    <TextView android:id="@+id/min_icon" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="🌤️" android:textSize="27sp"/>
-                    <TextView android:id="@+id/min_desc" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="Thời tiết hiện tại"
-                        android:textColor="#FFD8E5F2" android:textSize="10sp"/>
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:ns0="http://schemas.android.com/apk/res/android" ns0:id="@+id/widget_root" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:orientation="vertical" ns0:padding="12dp" ns0:background="#FF050B14">
+    <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="0dp" ns0:layout_weight="1" ns0:orientation="horizontal">
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="1.12" ns0:orientation="vertical" ns0:gravity="center_vertical" ns0:paddingEnd="8dp">
+            <TextView ns0:id="@+id/min_location" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:text="⌖ Đang lấy vị trí" ns0:textColor="#FFD8E5F2" ns0:textSize="11sp" />
+            <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:orientation="horizontal" ns0:gravity="center_vertical">
+                <TextView ns0:id="@+id/min_temp" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="26°" ns0:textColor="#FFFFFFFF" ns0:textSize="48sp" ns0:textStyle="normal" />
+                <LinearLayout ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:orientation="vertical" ns0:layout_marginStart="8dp">
+                    <TextView ns0:id="@+id/min_icon" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="🌤️" ns0:textSize="27sp" />
+                    <TextView ns0:id="@+id/min_desc" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="Thời tiết hiện tại" ns0:textColor="#FFD8E5F2" ns0:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
-            <TextView android:id="@+id/min_forecast" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_marginTop="7dp"
-                android:text="T2  ☁   T3  🌦   T4  ☁"
-                android:textColor="#FFE8EAF0" android:textSize="10sp"/>
-            <TextView android:id="@+id/min_month_title" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_marginTop="10dp"
-                android:text="THÁNG 11" android:textColor="#FFFFE08A" android:textSize="11sp"/>
-            <TextView android:id="@+id/min_big_day" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="18"
-                android:textColor="#FFFFFFFF" android:textSize="68sp" android:textStyle="bold"/>
-            <TextView android:id="@+id/min_lunar" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:padding="5dp"
-                android:background="@drawable/widget_panel_bg" android:text="10/10 • Âm lịch"
-                android:textColor="#FFFFFFFF" android:textSize="11sp"/>
+            <TextView ns0:id="@+id/min_month_title" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:layout_marginTop="10dp" ns0:text="THÁNG 11" ns0:textColor="#FFFFE08A" ns0:textSize="11sp" />
+            <TextView ns0:id="@+id/min_big_day" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:text="18" ns0:textColor="#FFFFFFFF" ns0:textSize="68sp" ns0:textStyle="bold" />
+            <TextView ns0:id="@+id/min_lunar" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:padding="5dp" ns0:background="@drawable/widget_panel_bg" ns0:text="10/10 • Âm lịch" ns0:textColor="#FFFFFFFF" ns0:textSize="11sp" />
         </LinearLayout>
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="0.88" android:orientation="vertical" android:paddingStart="5dp">
-            <TextView android:id="@+id/min_calendar_title" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center"
-                android:text="LỊCH THÁNG" android:textColor="#FFFFE08A" android:textSize="11sp"/>
-            <TextView android:id="@+id/min_calendar" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="center"
-                android:text="T2 T3 T4 T5 T6 T7 CN"
-                android:textColor="#FFFFFFFF" android:textSize="10sp"
-                android:lineSpacingExtra="3dp"/>
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="0.88" ns0:orientation="vertical" ns0:paddingStart="5dp">
+            <TextView ns0:id="@+id/min_calendar_title" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="LỊCH THÁNG" ns0:textColor="#FFFFE08A" ns0:textSize="11sp" />
+            <TextView ns0:id="@+id/min_calendar" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:gravity="center" ns0:text="T2 T3 T4 T5 T6 T7 CN" ns0:textColor="#FFFFFFFF" ns0:textSize="10sp" ns0:lineSpacingExtra="3dp" />
         </LinearLayout>
     </LinearLayout>
-    <TextView android:id="@+id/min_phrase" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:gravity="center"
-        android:paddingTop="8dp" android:text="Cứ bước tiếp, những điều đẹp đẽ sẽ đến."
-        android:textColor="#FFFFFFFF" android:textSize="15sp" android:textStyle="italic"/>
-    <TextView android:id="@+id/min_quote_author" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:gravity="end"
-        android:text="— Lời hay ý đẹp —" android:textColor="#FFB6C6D8" android:textSize="9sp"/>
+    <TextView ns0:id="@+id/min_phrase" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:paddingTop="8dp" ns0:text="Cứ bước tiếp, những điều đẹp đẽ sẽ đến." ns0:textColor="#FFFFFFFF" ns0:textSize="15sp" ns0:textStyle="italic" />
+    <TextView ns0:id="@+id/min_quote_author" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="end" ns0:text="— Lời hay ý đẹp —" ns0:textColor="#FFB6C6D8" ns0:textSize="9sp" />
 </LinearLayout>
