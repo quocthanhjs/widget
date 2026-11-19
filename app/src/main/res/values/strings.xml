@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">DQT Lunar Weather</string>
+    <string name="digital_widget_description">Kiểu 1 – Đồng hồ số, lịch tháng âm dương, thời tiết</string>
+    <string name="analog_widget_description">Kiểu 2 – Đồng hồ tròn truyền thống, thư pháp, lịch tháng âm dương</string>
+    <string name="minimal_widget_description">Kiểu 3 – Tối giản nghệ thuật, lịch âm dương và thời tiết</string>
+</resources>

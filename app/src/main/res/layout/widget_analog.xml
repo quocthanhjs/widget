@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:ns0="http://schemas.android.com/apk/res/android" ns0:id="@+id/widget_root" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:orientation="vertical" ns0:padding="10dp" ns0:background="@drawable/widget_glass_bg">
+    <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="0dp" ns0:layout_weight="1" ns0:orientation="horizontal">
+        <ImageView ns0:id="@+id/analog_face" ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="0.92" ns0:scaleType="fitCenter" ns0:contentDescription="Đồng hồ kim truyền thống" />
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="1.08" ns0:orientation="vertical" ns0:gravity="center_vertical" ns0:paddingStart="9dp">
+            <TextView ns0:id="@+id/phrase" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Vạn Sự Bình An" ns0:textColor="#FFFFD66B" ns0:textSize="25sp" ns0:textStyle="italic" />
+            <TextView ns0:id="@+id/month_solar" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:layout_marginTop="7dp" ns0:padding="7dp" ns0:background="@drawable/widget_panel_bg" ns0:text="Tháng 11 năm 2026 (Dương lịch)" ns0:textColor="#FFFFFFFF" ns0:textSize="12sp" />
+            <TextView ns0:id="@+id/month_lunar" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Tháng âm lịch Việt Nam" ns0:textColor="#FFFFE66C" ns0:textSize="12sp" />
+            <TextView ns0:id="@+id/analog_weather" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:layout_marginTop="8dp" ns0:text="☀️  --°C  •  Chạm để mở thời tiết" ns0:textColor="#FFFFFFFF" ns0:textSize="15sp" />
+            <TextView ns0:id="@+id/analog_location" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="⌖ Vị trí" ns0:textColor="#FFFFFFFF" ns0:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:ns0="http://schemas.android.com/apk/res/android" ns0:id="@+id/widget_root" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:orientation="vertical" ns0:padding="10dp" ns0:background="@drawable/widget_glass_bg">
+    <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="0dp" ns0:layout_weight="1" ns0:orientation="horizontal">
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="1.02" ns0:orientation="vertical" ns0:gravity="center_vertical" ns0:paddingEnd="7dp">
+            <TextClock ns0:id="@+id/digital_clock" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:format24Hour="HH:mm" ns0:format12Hour="hh:mm" ns0:textColor="#FFFFFFFF" ns0:textSize="48sp" ns0:textStyle="bold" />
+            <TextView ns0:id="@+id/solar_date" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:text="Thứ Tư, 18 tháng 11, 2026" ns0:textColor="#FFFFFFFF" ns0:textSize="13sp" ns0:textStyle="bold" />
+            <TextView ns0:id="@+id/lunar_date" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:layout_marginTop="5dp" ns0:padding="6dp" ns0:gravity="center" ns0:text="Ngày âm lịch Việt Nam" ns0:textColor="#FFFFEA57" ns0:textSize="13sp" ns0:textStyle="bold" ns0:background="@drawable/widget_panel_bg" />
+            <LinearLayout ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:orientation="horizontal" ns0:gravity="center_vertical" ns0:layout_marginTop="7dp">
+                <TextView ns0:id="@+id/weather_icon" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="☀️" ns0:textSize="27sp" />
+                <LinearLayout ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:orientation="vertical" ns0:layout_marginStart="6dp">
+                    <TextView ns0:id="@+id/temp" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="--°C" ns0:textColor="#FFFFFFFF" ns0:textSize="24sp" ns0:textStyle="bold" />
+                    <TextView ns0:id="@+id/weather_desc" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="Chạm để mở thời tiết" ns0:textColor="#FFFFFFFF" ns0:textSize="10sp" />
+                    <TextView ns0:id="@+id/location" ns0:layout_width="wrap_content" ns0:layout_height="wrap_content" ns0:text="⌖ Vị trí" ns0:textColor="#FFFFFFFF" ns0:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout ns0:layout_width="0dp" ns0:layout_height="match_parent" ns0:layout_weight="0.98" ns0:orientation="vertical" ns0:paddingStart="7dp">
+            <TextView ns0:id="@+id/month_title" ns0:layout_width="match_parent" ns0:layout_height="wrap_content" ns0:gravity="center" ns0:text="Tháng 11, 2026" ns0:textColor="#FFFFFFFF" ns0:textSize="16sp" ns0:textStyle="bold" />
+            <TextView ns0:id="@+id/month_grid" ns0:layout_width="match_parent" ns0:layout_height="match_parent" ns0:gravity="center" ns0:text="T2 T3 T4 T5 T6 T7 CN" ns0:textColor="#FFFFFFFF" ns0:textSize="8sp" ns0:fontFamily="monospace" ns0:lineSpacingExtra="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
