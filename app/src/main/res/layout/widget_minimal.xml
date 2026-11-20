@@ -1,83 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="14dp"
-    android:background="@drawable/widget_glass_bg">
+    android:id="@+id/widget_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="12dp" android:background="@drawable/widget_glass_bg">
 
-    <TextClock
-        android:id="@+id/min_clock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:format24Hour="HH:mm"
-        android:format12Hour="hh:mm"
-        android:gravity="center"
-        android:textColor="#FFFFFFFF"
-        android:textSize="58sp"
-        android:textStyle="bold" />
+    <TextClock android:id="@+id/min_clock" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:format24Hour="HH:mm" android:format12Hour="hh:mm" android:gravity="center"
+        android:textColor="#FFFFFFFF" android:textSize="58sp" android:textStyle="bold"
+        android:singleLine="true" android:includeFontPadding="false" />
+    <TextView android:id="@+id/min_solar_date" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Thứ Sáu, 20 tháng 11, 2026" android:textColor="#FFE6EDF7" android:textSize="12sp" />
+    <TextView android:id="@+id/min_lunar" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center" android:layout_marginTop="6dp" android:background="@drawable/widget_panel_bg"
+        android:gravity="center" android:paddingHorizontal="14dp" android:paddingVertical="5dp"
+        android:text="Ngày 12 tháng 10 năm 2026" android:textColor="#FFFFD66B" android:textSize="12sp" android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/min_solar_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Thứ Sáu, 20 tháng 11, 2026"
-        android:textColor="#FFE6EDF7"
-        android:textSize="13sp" />
-
-    <TextView
-        android:id="@+id/min_lunar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/widget_panel_bg"
-        android:gravity="center"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="6dp"
-        android:text="Ngày 12 tháng 10 âm lịch"
-        android:textColor="#FFFFD66B"
-        android:textSize="13sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/min_weather"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="☀  28°C  ·  Trời quang"
-            android:textColor="#FFFFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/min_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="⌖ Bạc Liêu"
-            android:textColor="#FFD4E0EF"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/min_phrase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:text="Vạn Sự Bình An"
-            android:textColor="#FFFFD66B"
-            android:textSize="17sp"
-            android:textStyle="italic" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:layout_marginTop="8dp" android:orientation="horizontal" android:gravity="center_vertical"
+        android:padding="8dp" android:background="@drawable/widget_panel_bg">
+        <TextView android:id="@+id/min_weather_icon" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:gravity="center" android:text="🌤️" android:textSize="62sp" />
+        <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#6679DFFF" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.15"
+            android:orientation="vertical" android:gravity="center" android:paddingStart="8dp">
+            <TextView android:id="@+id/min_temp" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:text="29°C" android:textColor="#FFFFFFFF" android:textSize="28sp" android:textStyle="bold" />
+            <TextView android:id="@+id/min_desc" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:text="Có mây" android:textColor="#FFFFFFFF" android:textSize="14sp" android:textStyle="bold" />
+            <TextView android:id="@+id/min_location" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:text="⌖ Bạc Liêu, Cà Mau" android:textColor="#FFE6EDF7" android:textSize="10sp" />
+        </LinearLayout>
     </LinearLayout>
+    <TextView android:id="@+id/min_phrase" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:layout_marginTop="6dp" android:text="Vạn Sự Bình An"
+        android:textColor="#FFFFD66B" android:textSize="15sp" android:textStyle="italic" />
 </LinearLayout>

@@ -25,6 +25,8 @@ class SettingsActivity : Activity() {
     private var opacityValue = 88
     private var romanNumbers = false
     private var showSeconds = false
+    private var digitalClockSize = 58f
+    private lateinit var clockSizeLabel: TextView
     private var refreshMinutes = 30
     private lateinit var previewCard: LinearLayout
     private lateinit var previewHeading: TextView
@@ -47,6 +49,7 @@ class SettingsActivity : Activity() {
         opacityValue = prefs.getInt("background_alpha", 88).coerceIn(0, 100)
         romanNumbers = prefs.getBoolean("roman", false)
         showSeconds = prefs.getBoolean("show_seconds", false)
+        digitalClockSize = prefs.getFloat("digital_clock_size", 58f).coerceIn(38f, 82f)
         refreshMinutes = prefs.getInt("refresh_minutes", 30)
 
         val scroll = ScrollView(this).apply {
@@ -156,7 +159,30 @@ class SettingsActivity : Activity() {
             }
         }
         clockPanel.addView(secondsToggle)
-        clockPanel.addView(label("Khi bật, giây chạy liên tục theo đồng hồ hệ thống; không dùng bộ hẹn giờ cập nhật từng giây.", 10f, 0xFF8FA8C2.toInt()))
+        clockPanel.addView(label("Khi bật, giây chạy theo đồng hồ hệ thống.", 10f, 0xFF8FA8C2.toInt()))
+        clockPanel.addView(space(5))
+        clockPanel.addView(label("Kích thước đồng hồ số", 12f, 0xFFB7C8DA.toInt(), true))
+        val clockSizeRow = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL }
+        clockSizeRow.addView(label("A−", 13f, Color.WHITE, true))
+        val clockSizeSeek = SeekBar(this).apply {
+            max = 44
+            progress = (digitalClockSize - 38f).toInt()
+            progressTintList = android.content.res.ColorStateList.valueOf(0xFF42C8F5.toInt())
+            thumbTintList = android.content.res.ColorStateList.valueOf(0xFFFFD36A.toInt())
+        }
+        clockSizeRow.addView(clockSizeSeek, LinearLayout.LayoutParams(0, dp(42), 1f).apply { marginStart = dp(8); marginEnd = dp(8) })
+        clockSizeLabel = label("${digitalClockSize.toInt()}sp", 12f, 0xFFFFD77A.toInt(), true).apply { gravity = Gravity.END }
+        clockSizeRow.addView(clockSizeLabel)
+        clockPanel.addView(clockSizeRow)
+        clockSizeSeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                digitalClockSize = (38 + progress).toFloat()
+                clockSizeLabel.text = "${digitalClockSize.toInt()}sp"
+                updatePreview()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
         clockPanel.addView(space(5))
         clockPanel.addView(label("Lời hay – ý đẹp (dùng cho giao diện tối giản và đồng hồ tròn)", 11f, 0xFFB7C8DA.toInt()))
         phraseInput = EditText(this).apply {
@@ -226,6 +252,7 @@ class SettingsActivity : Activity() {
                 .putInt("design", selectedDesign)
                 .putBoolean("roman", romanGroup.checkedRadioButtonId == 102)
                 .putBoolean("show_seconds", showSeconds)
+                .putFloat("digital_clock_size", digitalClockSize)
                 .putString("phrase", phraseInput.text.toString())
                 .putInt("refresh_minutes", intArrayOf(15, 30, 60, 180)[intervalSpinner.selectedItemPosition])
                 .putInt("background_color", palette[selectedColor])
@@ -292,25 +319,33 @@ class SettingsActivity : Activity() {
         previewHeading.text = arrayOf("XEM TRƯỚC · ĐA NĂNG", "XEM TRƯỚC · SỐ TỐI GIẢN", "XEM TRƯỚC · ĐỒNG HỒ TRÒN")[selectedDesign]
         when (selectedDesign) {
             0 -> {
-                previewCard.addView(label(if (showSeconds) "14:49:26" else "14:49", 43f, white, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("Thứ Sáu · 20 tháng 11, 2026", 12f, 0xFFDCE8F5.toInt()).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("Ngày 12 tháng 10 âm lịch", 13f, gold, true).apply {
-                    gravity = Gravity.CENTER
-                    background = rounded(0x443D5CA8, 18f, 0x886B82FF.toInt())
-                    setPadding(dp(14), dp(5), dp(14), dp(5))
-                })
-                previewCard.addView(label("☀   28°C   Trời quang   ·   Bạc Liêu", 13f, white, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("THÁNG 11, 2026\nT2  T3  T4  T5  T6  T7  CN\n                         16  17  18  19  20  21  22", 9f, 0xFFDCEBFA.toInt()).apply {
-                    gravity = Gravity.CENTER
-                    typeface = Typeface.MONOSPACE
-                })
+                val top = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
+                val clockColumn = column().apply { gravity = Gravity.CENTER_VERTICAL }
+                clockColumn.addView(label(if (showSeconds) "09:44:05" else "09:44", (digitalClockSize * 0.72f).coerceIn(28f, 58f), white, true))
+                clockColumn.addView(label("Thứ Sáu, 20 tháng 11, 2026", 10f, 0xFFDCE8F5.toInt()))
+                top.addView(clockColumn, LinearLayout.LayoutParams(0, -1, 1f))
+                val dayCard = column().apply { gravity = Gravity.CENTER; background = rounded(0xFFF4F0E8.toInt(), 14f, 0xFFFFD36A.toInt()); setPadding(dp(8), dp(5), dp(8), dp(5)) }
+                dayCard.addView(label("THỨ SÁU", 10f, 0xFFB91C1C.toInt(), true).apply { gravity = Gravity.CENTER })
+                dayCard.addView(label("20", 44f, Color.BLACK, true).apply { gravity = Gravity.CENTER })
+                dayCard.addView(label("THÁNG 11, 2026", 9f, Color.BLACK, true).apply { gravity = Gravity.CENTER })
+                dayCard.addView(label("12 tháng 10, 2026", 9f, 0xFFB91C1C.toInt(), true).apply { gravity = Gravity.CENTER })
+                top.addView(dayCard, LinearLayout.LayoutParams(dp(116), dp(118)))
+                previewCard.addView(top)
+                val weatherGlass = column().apply { gravity = Gravity.CENTER; background = rounded(0xCC063A78.toInt(), 18f, 0xFF4DDCFF.toInt()); setPadding(dp(8), dp(5), dp(8), dp(5)) }
+                weatherGlass.addView(label("☀️  29°C", 25f, white, true).apply { gravity = Gravity.CENTER })
+                weatherGlass.addView(label("Có mây  ·  Bạc Liêu, Cà Mau", 11f, white).apply { gravity = Gravity.CENTER })
+                previewCard.addView(weatherGlass, LinearLayout.LayoutParams(-1, dp(62)).apply { topMargin = dp(7) })
             }
             1 -> {
-                previewCard.addView(label(if (showSeconds) "14:49:26" else "14:49", 62f, white, true).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label(if (showSeconds) "09:44:05" else "09:44", digitalClockSize, white, true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("THỨ SÁU  ·  20 THÁNG 11, 2026", 11f, 0xFFE4EDF8.toInt(), true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("Ngày 12 tháng 10 âm lịch", 13f, gold, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("☀  28°C  ·  Trời quang", 14f, white).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("⌖ Bạc Liêu", 12f, 0xFFCAD8E8.toInt()).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label("Ngày 12 tháng 10 năm 2026", 13f, gold, true).apply { gravity = Gravity.CENTER })
+                val weatherGlass = column().apply { gravity = Gravity.CENTER; background = rounded(0xCC063A78.toInt(), 18f, 0xFF4DDCFF.toInt()); setPadding(dp(8), dp(7), dp(8), dp(7)) }
+                weatherGlass.addView(label("🌤️", 42f, white).apply { gravity = Gravity.CENTER })
+                weatherGlass.addView(label("29°C  ·  Có mây", 19f, white, true).apply { gravity = Gravity.CENTER })
+                weatherGlass.addView(label("⌖ Bạc Liêu, Cà Mau", 11f, 0xFFE4EDF8.toInt()).apply { gravity = Gravity.CENTER })
+                previewCard.addView(weatherGlass, LinearLayout.LayoutParams(-1, dp(112)).apply { topMargin = dp(7) })
+                previewCard.addView(label(phrase, 14f, gold, true).apply { gravity = Gravity.CENTER })
             }
             else -> {
                 val clock = label(if (romanNumbers) "XII\n◷\nVI" else "12\n◷\n6", 35f, gold, true).apply {
