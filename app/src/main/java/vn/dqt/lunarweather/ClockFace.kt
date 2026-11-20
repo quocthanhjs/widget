@@ -5,7 +5,7 @@ import java.util.Calendar
 import java.util.Locale
 
 object ClockFace {
-    fun render(size:Int, roman:Boolean, color:Int):Bitmap {
+    fun render(size:Int, roman:Boolean, color:Int, showSeconds:Boolean):Bitmap {
         val bmp=Bitmap.createBitmap(size,size,Bitmap.Config.ARGB_8888)
         val c=Canvas(bmp); val cx=size/2f; val cy=size/2f; val r=size*0.46f
         val p=Paint(Paint.ANTI_ALIAS_FLAG)
@@ -43,7 +43,7 @@ object ClockFace {
         }
         hand((hour+min/60.0)*Math.PI/6,r*0.48f,size*0.025f,Color.BLACK)
         hand((min+sec/60.0)*Math.PI/30,r*0.70f,size*0.014f,Color.BLACK)
-        hand(sec*Math.PI/30,r*0.78f,size*0.006f,Color.RED)
+        if(showSeconds) hand(sec*Math.PI/30,r*0.78f,size*0.006f,Color.RED)
         p.color=color;c.drawCircle(cx,cy,size*0.035f,p)
         p.color=Color.DKGRAY;p.textSize=size*0.045f;p.textAlign=Paint.Align.CENTER
         c.drawText("DQT",cx,cy+r*0.22f,p)

@@ -57,7 +57,7 @@
             android:layout_marginTop="8dp"
             android:text="☀  28°C  ·  Trời quang"
             android:textColor="#FFFFFFFF"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:gravity="center"
             android:text="⌖ Bạc Liêu"
             android:textColor="#FFD4E0EF"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/min_phrase"

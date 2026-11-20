@@ -47,7 +47,7 @@ object WidgetUpdater {
         val monthTitle=SimpleDateFormat("'Tháng' M, yyyy",locale).apply{timeZone=tz}.format(now)
 
         if(design==2){
-            v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt())))
+            v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt()),prefs.getBoolean("show_seconds",false)))
             v.setTextViewText(R.id.phrase,phrase)
             v.setTextViewText(R.id.month_solar,"${cal.get(Calendar.DAY_OF_MONTH)} / ${cal.get(Calendar.MONTH)+1} / ${cal.get(Calendar.YEAR)}")
             v.setTextViewText(R.id.month_lunar,"${lunar.first} / ${lunar.second} / ${lunar.third}")
@@ -63,7 +63,11 @@ object WidgetUpdater {
             v.setTextViewText(R.id.solar_date,solar.replaceFirstChar{it.uppercase(locale)})
             v.setTextViewText(R.id.lunar_date,lunarText)
             v.setTextViewText(R.id.month_title,monthTitle)
-            v.setTextViewText(R.id.month_grid,monthGrid(cal,locale))
+            val monthCells = monthGridCells(cal)
+            monthCells.forEachIndexed { index, value ->
+                val viewId = context.resources.getIdentifier("day_$index", "id", context.packageName)
+                if (viewId != 0) v.setTextViewText(viewId, value)
+            }
             v.setTextViewText(R.id.temp,temp)
             v.setTextViewText(R.id.weather_icon,prefs.getString("weather_icon","🌤️"))
             v.setTextViewText(R.id.weather_desc,desc)
@@ -91,26 +95,17 @@ object WidgetUpdater {
         }
         return v
     }
-    private fun monthGrid(cal:Calendar,locale:Locale):String {
+    private fun monthGridCells(cal:Calendar):List<String> {
         val c=cal.clone() as Calendar
         c.set(Calendar.DAY_OF_MONTH,1)
         val first=(c.get(Calendar.DAY_OF_WEEK)+5)%7
         val max=c.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val solar=MutableList(42){"  "}
-        val lunar=MutableList(42){"  "}
-        for(day in 1..max){
+        val cells=MutableList(42) { "" }
+        for(day in 1..max) {
             val index=first+day-1
-            val lunarDate=LunarCalendar.fromSolar(day,c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR))
-            solar[index]=String.format(locale,"%2d",day)
-            lunar[index]=String.format(locale,"%2d",lunarDate.first)
+            val lunar=LunarCalendar.fromSolar(day,c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR))
+            cells[index]="$day\\n${lunar.first}"
         }
-        val out=StringBuilder("T2 T3 T4 T5 T6 T7 CN\n")
-        for(row in 0 until 6){
-            for(col in 0 until 7) out.append(solar[row*7+col]).append(" ")
-            out.append("\n")
-            for(col in 0 until 7) out.append(lunar[row*7+col]).append(" ")
-            if(row<5) out.append("\n")
-        }
-        return out.toString()
+        return cells
     }
 }
