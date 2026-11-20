@@ -47,7 +47,7 @@ object WidgetUpdater {
         val monthTitle=SimpleDateFormat("'Tháng' M, yyyy",locale).apply{timeZone=tz}.format(now)
 
         if(design==2){
-            v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt())))
+            v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt()),showSeconds=prefs.getBoolean("show_seconds",false)))
             v.setTextViewText(R.id.phrase,phrase)
             v.setTextViewText(R.id.month_solar,"${cal.get(Calendar.DAY_OF_MONTH)} / ${cal.get(Calendar.MONTH)+1} / ${cal.get(Calendar.YEAR)}")
             v.setTextViewText(R.id.month_lunar,"${lunar.first} / ${lunar.second} / ${lunar.third}")
