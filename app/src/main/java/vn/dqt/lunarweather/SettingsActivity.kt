@@ -17,9 +17,9 @@ class SettingsActivity : Activity() {
     private val prefs by lazy { getSharedPreferences("dqt_settings", MODE_PRIVATE) }
     private val palette = intArrayOf(
         0xFF142D67.toInt(), 0xFF39205F.toInt(), 0xFF641D31.toInt(),
-        0xFF101820.toInt(), 0xFF064D50.toInt()
+        0xFF101820.toInt(), 0xFF064D50.toInt(), 0xFFFFFFFF.toInt()
     )
-    private val paletteNames = arrayOf("Xanh đêm", "Tím cực quang", "Đỏ rượu", "Đen kính", "Xanh ngọc")
+    private val paletteNames = arrayOf("Xanh đêm", "Tím cực quang", "Đỏ rượu", "Đen kính", "Xanh ngọc", "Trắng")
     private var selectedDesign = 0
     private var selectedColor = 0
     private var opacityValue = 88
@@ -31,6 +31,7 @@ class SettingsActivity : Activity() {
     private lateinit var previewCard: LinearLayout
     private lateinit var previewHeading: TextView
     private lateinit var opacityLabel: TextView
+    private lateinit var opacitySeek: SeekBar
     private lateinit var locationLabel: TextView
     private lateinit var phraseInput: EditText
     private lateinit var romanGroup: RadioGroup
@@ -217,13 +218,18 @@ class SettingsActivity : Activity() {
 
         val appearancePanel = card()
         appearancePanel.addView(sectionTitle("04  ·  MÀU NỀN & ĐỘ TRONG SUỐT"))
-        appearancePanel.addView(label("Chọn tông màu Liquid Glass", 12f, 0xFFB7C8DA.toInt()))
+        appearancePanel.addView(label("Chọn tông màu Liquid Glass hoặc nền trắng", 12f, 0xFFB7C8DA.toInt()))
         val colorRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         for (i in palette.indices) {
             val swatch = View(this).apply {
                 background = rounded(palette[i], 40f, 0x99FFFFFF.toInt())
                 setOnClickListener {
                     selectedColor = i
+                    if (palette[i] == Color.WHITE) {
+                        opacityValue = 100
+                        if (::opacitySeek.isInitialized) opacitySeek.progress = 100
+                        if (::opacityLabel.isInitialized) opacityLabel.text = "100%"
+                    }
                     refreshColorSwatches(colorRow)
                     updatePreview()
                 }
@@ -235,14 +241,14 @@ class SettingsActivity : Activity() {
         appearancePanel.addView(colorRow)
         appearancePanel.addView(label("Độ đậm nền", 12f, 0xFFB7C8DA.toInt()))
         val opacityRow = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL }
-        val seek = SeekBar(this).apply {
+        opacitySeek = SeekBar(this).apply {
             max = 100
             progress = opacityValue
             progressTintList = android.content.res.ColorStateList.valueOf(0xFF5DE1F2.toInt())
             thumbTintList = android.content.res.ColorStateList.valueOf(0xFFFFD77A.toInt())
         }
         opacityLabel = label("$opacityValue%", 12f, Color.WHITE, true).apply { gravity = Gravity.END }
-        opacityRow.addView(seek, LinearLayout.LayoutParams(0, dp(42), 1f))
+        opacityRow.addView(opacitySeek, LinearLayout.LayoutParams(0, dp(42), 1f))
         opacityRow.addView(opacityLabel, LinearLayout.LayoutParams(dp(46), -2))
         appearancePanel.addView(opacityRow)
         page.addView(appearancePanel)
@@ -256,7 +262,7 @@ class SettingsActivity : Activity() {
                 .putString("phrase", phraseInput.text.toString())
                 .putInt("refresh_minutes", intArrayOf(15, 30, 60, 180)[intervalSpinner.selectedItemPosition])
                 .putInt("background_color", palette[selectedColor])
-                .putInt("background_alpha", opacityValue)
+                .putInt("background_alpha", if (palette[selectedColor] == Color.WHITE) 100 else opacityValue)
                 .putInt("accent_color", 0xFFFFD36A.toInt())
                 .apply()
             WidgetUpdater.refreshAll(this)
@@ -285,7 +291,7 @@ class SettingsActivity : Activity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { updatePreview() }
             override fun afterTextChanged(s: Editable?) {}
         })
-        seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        opacitySeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 opacityValue = progress
                 opacityLabel.text = "$progress%"
@@ -308,13 +314,14 @@ class SettingsActivity : Activity() {
         val base = palette[selectedColor]
         val alpha = (opacityValue * 255 / 100 shl 24) or (base and 0x00FFFFFF)
         previewCard.background = GradientDrawable(GradientDrawable.Orientation.TL_BR,
-            intArrayOf(alpha, 0xFF07111F.toInt())).apply {
+            intArrayOf(alpha, if (lightTheme) Color.WHITE else 0xFF07111F.toInt())).apply {
             cornerRadius = dp(20).toFloat()
             setStroke(dp(1), 0x997BCBFF.toInt())
         }
         previewCard.removeAllViews()
-        val white = Color.WHITE
-        val gold = 0xFFFFD66B.toInt()
+        val lightTheme = palette[selectedColor] == Color.WHITE
+        val white = if (lightTheme) Color.BLACK else Color.WHITE
+        val gold = if (lightTheme) 0xFFB77900.toInt() else 0xFFFFD66B.toInt()
         val phrase = phraseInput.text.toString().ifBlank { "Vạn Sự Bình An" }
         previewHeading.text = arrayOf("XEM TRƯỚC · ĐA NĂNG", "XEM TRƯỚC · SỐ TỐI GIẢN", "XEM TRƯỚC · ĐỒNG HỒ TRÒN")[selectedDesign]
         when (selectedDesign) {
@@ -322,7 +329,7 @@ class SettingsActivity : Activity() {
                 val top = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
                 val clockColumn = column().apply { gravity = Gravity.CENTER_VERTICAL }
                 clockColumn.addView(label(if (showSeconds) "09:44:05" else "09:44", (digitalClockSize * 0.72f).coerceIn(28f, 58f), white, true))
-                clockColumn.addView(label("Thứ Sáu, 20 tháng 11, 2026", 10f, 0xFFDCE8F5.toInt()))
+                clockColumn.addView(label("Thứ Sáu, 20 tháng 11, 2026", 10f, if (lightTheme) 0xFF334155.toInt() else 0xFFDCE8F5.toInt()))
                 top.addView(clockColumn, LinearLayout.LayoutParams(0, -1, 1f))
                 val dayCard = column().apply { gravity = Gravity.CENTER; background = rounded(0xFFF4F0E8.toInt(), 14f, 0xFFFFD36A.toInt()); setPadding(dp(8), dp(5), dp(8), dp(5)) }
                 dayCard.addView(label("THỨ SÁU", 10f, 0xFFB91C1C.toInt(), true).apply { gravity = Gravity.CENTER })
@@ -331,20 +338,28 @@ class SettingsActivity : Activity() {
                 dayCard.addView(label("12 tháng 10, 2026", 9f, 0xFFB91C1C.toInt(), true).apply { gravity = Gravity.CENTER })
                 top.addView(dayCard, LinearLayout.LayoutParams(dp(116), dp(118)))
                 previewCard.addView(top)
-                val weatherGlass = column().apply { gravity = Gravity.CENTER; background = rounded(0xCC063A78.toInt(), 18f, 0xFF4DDCFF.toInt()); setPadding(dp(8), dp(5), dp(8), dp(5)) }
-                weatherGlass.addView(label("☀️  29°C", 25f, white, true).apply { gravity = Gravity.CENTER })
-                weatherGlass.addView(label("Có mây  ·  Bạc Liêu, Cà Mau", 11f, white).apply { gravity = Gravity.CENTER })
-                previewCard.addView(weatherGlass, LinearLayout.LayoutParams(-1, dp(62)).apply { topMargin = dp(7) })
+                val weatherRow = LinearLayout(this).apply {
+                    gravity = Gravity.CENTER
+                    orientation = LinearLayout.HORIZONTAL
+                    setPadding(dp(8), dp(5), dp(8), dp(5))
+                }
+                weatherRow.addView(label("☀️", 34f, white, true))
+                val weatherText = column().apply { gravity = Gravity.CENTER_VERTICAL }
+                weatherText.addView(label("29°C", 23f, if (palette[selectedColor] == Color.WHITE) Color.BLACK else white, true))
+                weatherText.addView(label("Có mây  ·  Bạc Liêu, Cà Mau", 11f, if (palette[selectedColor] == Color.WHITE) 0xFF26364A.toInt() else white))
+                weatherRow.addView(weatherText)
+                previewCard.addView(weatherRow, LinearLayout.LayoutParams(-1, dp(62)).apply { topMargin = dp(7) })
             }
             1 -> {
                 previewCard.addView(label(if (showSeconds) "09:44:05" else "09:44", digitalClockSize, white, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("THỨ SÁU  ·  20 THÁNG 11, 2026", 11f, 0xFFE4EDF8.toInt(), true).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label("THỨ SÁU  ·  20 THÁNG 11, 2026", 11f, if (lightTheme) 0xFF334155.toInt() else 0xFFE4EDF8.toInt(), true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("Ngày 12 tháng 10 năm 2026", 13f, gold, true).apply { gravity = Gravity.CENTER })
-                val weatherGlass = column().apply { gravity = Gravity.CENTER; background = rounded(0xCC063A78.toInt(), 18f, 0xFF4DDCFF.toInt()); setPadding(dp(8), dp(7), dp(8), dp(7)) }
-                weatherGlass.addView(label("🌤️", 42f, white).apply { gravity = Gravity.CENTER })
-                weatherGlass.addView(label("29°C  ·  Có mây", 19f, white, true).apply { gravity = Gravity.CENTER })
-                weatherGlass.addView(label("⌖ Bạc Liêu, Cà Mau", 11f, 0xFFE4EDF8.toInt()).apply { gravity = Gravity.CENTER })
-                previewCard.addView(weatherGlass, LinearLayout.LayoutParams(-1, dp(112)).apply { topMargin = dp(7) })
+                val weatherPlain = column().apply { gravity = Gravity.CENTER; setPadding(dp(8), dp(7), dp(8), dp(7)) }
+                val lightText = palette[selectedColor] == Color.WHITE
+                weatherPlain.addView(label("🌤️", 48f, white).apply { gravity = Gravity.CENTER })
+                weatherPlain.addView(label("29°C  ·  Có mây", 21f, if (lightText) Color.BLACK else white, true).apply { gravity = Gravity.CENTER })
+                weatherPlain.addView(label("⌖ Bạc Liêu, Cà Mau", 12f, if (lightText) 0xFF26364A.toInt() else 0xFFE4EDF8.toInt()).apply { gravity = Gravity.CENTER })
+                previewCard.addView(weatherPlain, LinearLayout.LayoutParams(-1, dp(112)).apply { topMargin = dp(7) })
                 previewCard.addView(label(phrase, 14f, gold, true).apply { gravity = Gravity.CENTER })
             }
             else -> {

@@ -74,10 +74,31 @@ object WidgetUpdater {
             v.setTextViewText(R.id.weather_desc,desc)
             v.setTextViewText(R.id.location,"⌖ $location")
         }
-        val alpha=prefs.getInt("background_alpha",88).coerceIn(0,100)
         val color=prefs.getInt("background_color",0xFF142D67.toInt())
+        val alpha=if(color==android.graphics.Color.WHITE) 100 else prefs.getInt("background_alpha",88).coerceIn(0,100)
         val argb=((alpha*255/100) shl 24) or (color and 0x00FFFFFF)
         runCatching{v.setInt(R.id.widget_root,"setBackgroundColor",argb)}
+        val lightTheme = color == android.graphics.Color.WHITE
+        if (design == 0) {
+            val primary = if (lightTheme) 0xFF111827.toInt() else android.graphics.Color.WHITE
+            val secondary = if (lightTheme) 0xFF334155.toInt() else 0xFFEAF2FF.toInt()
+            runCatching { v.setTextColor(R.id.digital_clock, primary) }
+            runCatching { v.setTextColor(R.id.solar_date, secondary) }
+            runCatching { v.setTextColor(R.id.lunar_date, if (lightTheme) 0xFF9A6700.toInt() else 0xFFFFD66B.toInt()) }
+            runCatching { v.setTextColor(R.id.temp, primary) }
+            runCatching { v.setTextColor(R.id.weather_desc, primary) }
+            runCatching { v.setTextColor(R.id.location, secondary) }
+        } else if (design == 1) {
+            val primary = if (lightTheme) 0xFF111827.toInt() else android.graphics.Color.WHITE
+            val secondary = if (lightTheme) 0xFF334155.toInt() else 0xFFE6EDF7.toInt()
+            runCatching { v.setTextColor(R.id.min_clock, primary) }
+            runCatching { v.setTextColor(R.id.min_solar_date, secondary) }
+            runCatching { v.setTextColor(R.id.min_lunar, if (lightTheme) 0xFF9A6700.toInt() else 0xFFFFD66B.toInt()) }
+            runCatching { v.setTextColor(R.id.min_temp, primary) }
+            runCatching { v.setTextColor(R.id.min_desc, primary) }
+            runCatching { v.setTextColor(R.id.min_location, secondary) }
+            runCatching { v.setTextColor(R.id.min_phrase, if (lightTheme) 0xFF9A6700.toInt() else 0xFFFFD66B.toInt()) }
+        }
         val click=Intent(context,SettingsActivity::class.java)
         val pi=PendingIntent.getActivity(context,design+1,click,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val clickIds=when(design) {
