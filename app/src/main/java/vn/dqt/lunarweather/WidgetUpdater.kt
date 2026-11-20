@@ -39,7 +39,7 @@ object WidgetUpdater {
         val prefs=context.getSharedPreferences("dqt_settings",Context.MODE_PRIVATE)
         val solar=SimpleDateFormat("EEEE, dd 'tháng' M, yyyy",locale).apply{timeZone=tz}.format(now)
         val lunar=LunarCalendar.fromSolar(cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.MONTH)+1,cal.get(Calendar.YEAR))
-        val lunarText="Ngày ${lunar.first} tháng ${lunar.second} năm ${lunar.third} (Âm lịch)"
+        val lunarText="Ngày ${lunar.first} tháng ${lunar.second} năm ${lunar.third}"
         val phrase=prefs.getString("phrase","Vạn Sự Bình An").orEmpty().ifBlank{"Vạn Sự Bình An"}
         val location=prefs.getString("location_label","Đang lấy vị trí điện thoại…").orEmpty()
         val temp=prefs.getString("weather_temp","--°C").orEmpty()
@@ -49,8 +49,8 @@ object WidgetUpdater {
         if(design==2){
             v.setImageViewBitmap(R.id.analog_face,ClockFace.render(420,prefs.getBoolean("roman",false),prefs.getInt("accent_color",0xFFFFC857.toInt())))
             v.setTextViewText(R.id.phrase,phrase)
-            v.setTextViewText(R.id.month_solar,"${cal.get(Calendar.MONTH)+1} / ${cal.get(Calendar.YEAR)} (Dương lịch)")
-            v.setTextViewText(R.id.month_lunar,"Tháng ${lunar.second} năm ${lunar.third} (Âm lịch)")
+            v.setTextViewText(R.id.month_solar,"${cal.get(Calendar.DAY_OF_MONTH)} / ${cal.get(Calendar.MONTH)+1} / ${cal.get(Calendar.YEAR)}")
+            v.setTextViewText(R.id.month_lunar,"${lunar.first} / ${lunar.second} / ${lunar.third}")
             v.setTextViewText(R.id.analog_weather,"${prefs.getString("weather_icon","🌤️")}  $temp  •  $desc")
             v.setTextViewText(R.id.analog_location,"⌖ $location")
         } else if(design==1) {
@@ -73,14 +73,22 @@ object WidgetUpdater {
         val color=prefs.getInt("background_color",0xFF142D67.toInt())
         val argb=((alpha*255/100) shl 24) or (color and 0x00FFFFFF)
         runCatching{v.setInt(R.id.widget_root,"setBackgroundColor",argb)}
-        val click=Intent(context,SettingsActivity::class.java).putExtra("open_weather",true)
+        val click=Intent(context,SettingsActivity::class.java)
         val pi=PendingIntent.getActivity(context,design+1,click,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val clickIds=when(design) {
             2 -> listOf(R.id.analog_weather,R.id.analog_location)
             1 -> listOf(R.id.min_weather,R.id.min_location)
             else -> listOf(R.id.weather_icon,R.id.temp,R.id.weather_desc,R.id.location)
         }
+        // Chạm bất kỳ vị trí nào trên widget đều mở thẳng màn hình cài đặt.
+        v.setOnClickPendingIntent(R.id.widget_root, pi)
         clickIds.forEach{runCatching{v.setOnClickPendingIntent(it,pi)}}
+        val clockFormat = if (prefs.getBoolean("show_seconds", false)) "HH:mm:ss" else "HH:mm"
+        val clockFormat12 = if (prefs.getBoolean("show_seconds", false)) "hh:mm:ss a" else "hh:mm a"
+        listOf(R.id.digital_clock, R.id.min_clock).forEach { id ->
+            runCatching { v.setCharSequence(id, "setFormat24Hour", clockFormat) }
+            runCatching { v.setCharSequence(id, "setFormat12Hour", clockFormat12) }
+        }
         return v
     }
     private fun monthGrid(cal:Calendar,locale:Locale):String {

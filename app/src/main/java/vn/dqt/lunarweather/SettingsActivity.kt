@@ -24,6 +24,7 @@ class SettingsActivity : Activity() {
     private var selectedColor = 0
     private var opacityValue = 88
     private var romanNumbers = false
+    private var showSeconds = false
     private var refreshMinutes = 30
     private lateinit var previewCard: LinearLayout
     private lateinit var previewHeading: TextView
@@ -45,6 +46,7 @@ class SettingsActivity : Activity() {
         selectedColor = palette.indexOf(prefs.getInt("background_color", palette[0])).let { if (it < 0) 0 else it }
         opacityValue = prefs.getInt("background_alpha", 88).coerceIn(0, 100)
         romanNumbers = prefs.getBoolean("roman", false)
+        showSeconds = prefs.getBoolean("show_seconds", false)
         refreshMinutes = prefs.getInt("refresh_minutes", 30)
 
         val scroll = ScrollView(this).apply {
@@ -142,6 +144,19 @@ class SettingsActivity : Activity() {
         romanGroup.addView(roman)
         romanGroup.check(if (romanNumbers) 102 else 101)
         clockPanel.addView(romanGroup)
+        val secondsToggle = CheckBox(this).apply {
+            text = "Hiển thị giây trên đồng hồ số"
+            setTextColor(Color.WHITE)
+            textSize = 13f
+            buttonTintList = android.content.res.ColorStateList.valueOf(0xFF65DDF2.toInt())
+            isChecked = showSeconds
+            setOnCheckedChangeListener { _, checked ->
+                showSeconds = checked
+                updatePreview()
+            }
+        }
+        clockPanel.addView(secondsToggle)
+        clockPanel.addView(label("Khi bật, giây chạy liên tục theo đồng hồ hệ thống; không dùng bộ hẹn giờ cập nhật từng giây.", 10f, 0xFF8FA8C2.toInt()))
         clockPanel.addView(space(5))
         clockPanel.addView(label("Lời hay – ý đẹp (dùng cho giao diện tối giản và đồng hồ tròn)", 11f, 0xFFB7C8DA.toInt()))
         phraseInput = EditText(this).apply {
@@ -210,6 +225,7 @@ class SettingsActivity : Activity() {
             prefs.edit()
                 .putInt("design", selectedDesign)
                 .putBoolean("roman", romanGroup.checkedRadioButtonId == 102)
+                .putBoolean("show_seconds", showSeconds)
                 .putString("phrase", phraseInput.text.toString())
                 .putInt("refresh_minutes", intArrayOf(15, 30, 60, 180)[intervalSpinner.selectedItemPosition])
                 .putInt("background_color", palette[selectedColor])
@@ -276,7 +292,7 @@ class SettingsActivity : Activity() {
         previewHeading.text = arrayOf("XEM TRƯỚC · ĐA NĂNG", "XEM TRƯỚC · SỐ TỐI GIẢN", "XEM TRƯỚC · ĐỒNG HỒ TRÒN")[selectedDesign]
         when (selectedDesign) {
             0 -> {
-                previewCard.addView(label("14:49", 43f, white, true).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label(if (showSeconds) "14:49:26" else "14:49", 43f, white, true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("Thứ Sáu · 20 tháng 11, 2026", 12f, 0xFFDCE8F5.toInt()).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("Ngày 12 tháng 10 âm lịch", 13f, gold, true).apply {
                     gravity = Gravity.CENTER
@@ -284,13 +300,13 @@ class SettingsActivity : Activity() {
                     setPadding(dp(14), dp(5), dp(14), dp(5))
                 })
                 previewCard.addView(label("☀   28°C   Trời quang   ·   Bạc Liêu", 13f, white, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("THÁNG 11, 2026     T2   T3   T4   T5   T6   T7   CN\n                         16   17   18   19   20   21   22", 9f, 0xFFDCEBFA.toInt()).apply {
+                previewCard.addView(label("THÁNG 11, 2026\nT2  T3  T4  T5  T6  T7  CN\n                         16  17  18  19  20  21  22", 9f, 0xFFDCEBFA.toInt()).apply {
                     gravity = Gravity.CENTER
                     typeface = Typeface.MONOSPACE
                 })
             }
             1 -> {
-                previewCard.addView(label("14:49", 62f, white, true).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label(if (showSeconds) "14:49:26" else "14:49", 62f, white, true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("THỨ SÁU  ·  20 THÁNG 11, 2026", 11f, 0xFFE4EDF8.toInt(), true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("Ngày 12 tháng 10 âm lịch", 13f, gold, true).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("☀  28°C  ·  Trời quang", 14f, white).apply { gravity = Gravity.CENTER })
@@ -303,8 +319,8 @@ class SettingsActivity : Activity() {
                 }
                 previewCard.addView(clock)
                 previewCard.addView(label(phrase, 20f, gold, true).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("Tháng 11 năm 2026 · Dương lịch", 12f, white).apply { gravity = Gravity.CENTER })
-                previewCard.addView(label("Tháng 10 năm Bính Ngọ · Âm lịch", 12f, 0xFFFFE9A6.toInt()).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label("20 / 11 / 2026", 12f, white).apply { gravity = Gravity.CENTER })
+                previewCard.addView(label("12 / 10 / 2026", 12f, 0xFFFFE9A6.toInt()).apply { gravity = Gravity.CENTER })
                 previewCard.addView(label("☀  28°C  ·  Trời quang  ·  Bạc Liêu", 12f, white).apply { gravity = Gravity.CENTER })
             }
         }
