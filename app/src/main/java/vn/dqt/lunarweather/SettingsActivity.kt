@@ -312,6 +312,7 @@ class SettingsActivity : Activity() {
     private fun updatePreview() {
         if (!::previewCard.isInitialized) return
         val base = palette[selectedColor]
+        val lightTheme = palette[selectedColor] == Color.WHITE
         val alpha = (opacityValue * 255 / 100 shl 24) or (base and 0x00FFFFFF)
         previewCard.background = GradientDrawable(GradientDrawable.Orientation.TL_BR,
             intArrayOf(alpha, if (lightTheme) Color.WHITE else 0xFF07111F.toInt())).apply {
@@ -319,7 +320,6 @@ class SettingsActivity : Activity() {
             setStroke(dp(1), 0x997BCBFF.toInt())
         }
         previewCard.removeAllViews()
-        val lightTheme = palette[selectedColor] == Color.WHITE
         val white = if (lightTheme) Color.BLACK else Color.WHITE
         val gold = if (lightTheme) 0xFFB77900.toInt() else 0xFFFFD66B.toInt()
         val phrase = phraseInput.text.toString().ifBlank { "Vạn Sự Bình An" }
